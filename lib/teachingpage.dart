@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
+import 'app_theme.dart';
+
 
 void main() {
   runApp(const FacultyApp());
 }
+
 
 class FacultyApp extends StatelessWidget {
   const FacultyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Faculty Portal',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF0A2540),
-        brightness: Brightness.light,
-        fontFamily: 'Roboto',
-      ),
-      home: const TeachingAssignmentsPage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder: (context, themeMode, child) {
+        return MaterialApp(
+          theme: buildLightTheme(),
+          darkTheme: buildDarkTheme(),
+          themeMode: themeMode,
+          home: const TeachingAssignmentsPage(),
+        );
+      },
     );
   }
 }
@@ -970,8 +973,19 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined, color: Colors.white70),
-            onPressed: () {},
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white70,
+                  ),
+            ),
+            onPressed: () {
+              toggleAppTheme();
+            },
           ),
           const CircleAvatar(
             radius: 16,

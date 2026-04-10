@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
-import 'profilepage.dart';
+import 'app_theme.dart';
+import 'mainprofilepage.dart';
+import 'Guidance.dart';
+import 'mentoringPage.dart';
+
+// Global theme notifier — define once, use everywhere
 
 void main() {
   runApp(const FacultyApp());
@@ -10,15 +15,17 @@ class FacultyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Faculty Portal',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF0A2540),
-        brightness: Brightness.light,
-      ),
-      home: const DashboardPage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder:
+          (_, mode, __) => MaterialApp(
+            title: 'Faculty Portal',
+            debugShowCheckedModeBanner: false,
+            themeMode: mode,
+            theme: buildLightTheme(),
+            darkTheme: buildDarkTheme(),
+            home: const DashboardPage(),
+          ),
     );
   }
 }
@@ -147,8 +154,32 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          _drawerSubItem(context, Icons.group_outlined, 'Mentoring', false),
-          _drawerSubItem(context, Icons.lightbulb_outline, 'Guidance', false),
+          _drawerSubItem(
+            context,
+            Icons.group_outlined,
+            'Mentoring',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(builder: (_) => const MentoringPage()),
+              );
+            },
+          ),
+          _drawerSubItem(
+            context,
+            Icons.lightbulb_outline,
+            'Guidance',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(builder: (_) => const GuidancePage()),
+              );
+            },
+          ),
           _drawerSection(context, 'Research'),
           _drawerItem(
             context,
@@ -216,6 +247,7 @@ class AppDrawer extends StatelessWidget {
             false,
             isLogout: true,
           ),
+
           const SizedBox(height: 16),
         ],
       ),
@@ -948,8 +980,19 @@ class _DashboardPageState extends State<DashboardPage>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined, color: Colors.white70),
-            onPressed: () {},
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white70,
+                  ),
+            ),
+            onPressed: () {
+              toggleAppTheme();
+            },
           ),
           const CircleAvatar(
             radius: 16,
@@ -1775,8 +1818,19 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined, color: Colors.white70),
-            onPressed: () {},
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white70,
+                  ),
+            ),
+            onPressed: () {
+              toggleAppTheme();
+            },
           ),
           const CircleAvatar(
             radius: 16,

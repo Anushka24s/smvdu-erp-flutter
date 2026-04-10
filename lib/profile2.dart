@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'DB2.dart';
+import 'DB2main.dart';
+import 'app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
   final bool isDarkMode;
@@ -55,8 +56,19 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         actions: [
           IconButton(
-            icon: Icon(widget.isDarkMode ? Icons.light_mode : Icons.dark_mode),
-            onPressed: () => widget.toggleTheme(!widget.isDarkMode),
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white70,
+                  ),
+            ),
+            onPressed: () {
+              toggleAppTheme();
+            },
           ),
           const Padding(
             padding: EdgeInsets.only(right: 16),

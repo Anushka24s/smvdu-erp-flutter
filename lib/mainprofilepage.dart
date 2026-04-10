@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_theme.dart';
 
 // ─── Standalone entry (remove if embedding) ───────────────────────────────────
 
@@ -356,8 +357,19 @@ class _ProfileScreenState extends State<ProfileScreen>
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.dark_mode_outlined, color: Colors.white70),
-            onPressed: () {},
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white70,
+                  ),
+            ),
+            onPressed: () {
+              toggleAppTheme();
+            },
           ),
           const CircleAvatar(
             radius: 16,

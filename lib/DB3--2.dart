@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'profilepage.dart';
+import 'mainprofilepage.dart';
 
 // Entry point wrapper to handle Theme state
 class MainWrapper extends StatefulWidget {

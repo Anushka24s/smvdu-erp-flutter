@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smvdu_erp/app_theme.dart';
+import 'package:smvdu_erp/mentoringPage.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -8,8 +10,6 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  bool _isDarkMode = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,13 +20,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(
-              _isDarkMode ? Icons.light_mode : Icons.dark_mode,
-              color: Colors.white,
+            icon: ValueListenableBuilder<ThemeMode>(
+              valueListenable: themeNotifier,
+              builder:
+                  (_, mode, __) => Icon(
+                    mode == ThemeMode.dark
+                        ? Icons.light_mode_outlined
+                        : Icons.dark_mode_outlined,
+                    color: Colors.white,
+                  ),
             ),
             onPressed: () {
-              setState(() => _isDarkMode = !_isDarkMode);
-              // TODO: implement real theme switching (e.g. via Provider)
+              toggleAppTheme();
             },
           ),
           Padding(
@@ -103,7 +108,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ListTile(
               leading: const Icon(Icons.group),
               title: const Text('Mentoring'),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const MentoringPage()),
+                );
+              },
             ),
             ListTile(
               leading: const Icon(Icons.lightbulb),
