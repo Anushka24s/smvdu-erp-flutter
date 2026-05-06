@@ -1,7 +1,7 @@
-<<<<<<< HEAD
+
 # smvdu_erp
 
-A new Flutter project.
+enterprise resouce planning 
 
 ## Getting Started
 
