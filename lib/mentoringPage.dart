@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_navigation.dart';
+import 'app_theme.dart';
+import 'package:smvdu_erp/publicationPage.dart';
 
 // ─── Standalone entry (remove if embedding) ───────────────────────────────────
 void main() => runApp(const _MentoringApp());
@@ -7,14 +10,16 @@ class _MentoringApp extends StatelessWidget {
   const _MentoringApp();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorSchemeSeed: const Color(0xFF0A2540),
-        scaffoldBackgroundColor: const Color(0xFFF0F4FB),
-      ),
-      home: const MentoringPage(),
+    return ValueListenableBuilder<ThemeMode>(
+      valueListenable: themeNotifier,
+      builder:
+          (_, mode, __) => MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: buildLightTheme(),
+            darkTheme: buildDarkTheme(),
+            themeMode: mode,
+            home: const MentoringPage(),
+          ),
     );
   }
 }
@@ -92,6 +97,7 @@ class _MentoringPageState extends State<MentoringPage>
 
   // ─── Drawer ──────────────────────────────────────────────────────────────────
 
+  // ignore: unused_element
   Widget _buildDrawer() {
     return Drawer(
       backgroundColor: const Color(0xFFFAFAFD),
@@ -99,7 +105,7 @@ class _MentoringPageState extends State<MentoringPage>
         padding: EdgeInsets.zero,
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -115,14 +121,14 @@ class _MentoringPageState extends State<MentoringPage>
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white30, width: 2),
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 32,
                     backgroundColor: Color(0xFF1E3A5F),
                     child: Icon(Icons.person, size: 36, color: Colors.white70),
                   ),
                 ),
-                const SizedBox(height: 14),
-                const Text(
+                SizedBox(height: 14),
+                Text(
                   'Faculty Member',
                   style: TextStyle(
                     color: Colors.white,
@@ -130,15 +136,15 @@ class _MentoringPageState extends State<MentoringPage>
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
-                const Text(
+                SizedBox(height: 3),
+                Text(
                   '23bee006@smvdu.ac.in',
                   style: TextStyle(color: Colors.white60, fontSize: 12.5),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _dItem(
             Icons.dashboard_outlined,
             'Dashboard',
@@ -178,8 +184,30 @@ class _MentoringPageState extends State<MentoringPage>
             onTap: () => Navigator.pop(context),
           ),
           _dSection('Research'),
-          _dItem(Icons.article_outlined, 'My Publications & IP', false),
-          _dSub(Icons.library_books_outlined, 'Publications', false),
+          _dItem(
+            Icons.article_outlined,
+            'My Publications & IP',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
+          _dSub(
+            Icons.library_books_outlined,
+            'Publications',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
           _dSub(Icons.verified_outlined, 'IP & Patents', false),
           _dItem(
             Icons.business_center_outlined,
@@ -202,10 +230,10 @@ class _MentoringPageState extends State<MentoringPage>
           _dItem(Icons.assignment_outlined, 'APR', false),
           _dSub(Icons.edit_note_outlined, 'Prepare APR', false),
           _dSub(Icons.send_outlined, 'Preview & Submit', false),
-          const SizedBox(height: 8),
-          const Divider(indent: 16, endIndent: 16),
+          SizedBox(height: 8),
+          Divider(indent: 16, endIndent: 16),
           _dItem(Icons.logout_rounded, 'Logout', false, isLogout: true),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -215,10 +243,10 @@ class _MentoringPageState extends State<MentoringPage>
     padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
     child: Text(
       label.toUpperCase(),
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 10.5,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF90A4AE),
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
         letterSpacing: 1.2,
       ),
     ),
@@ -312,7 +340,7 @@ class _MentoringPageState extends State<MentoringPage>
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0A2540).withOpacity(0.25),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
             blurRadius: 16,
             offset: const Offset(0, 5),
           ),
@@ -337,17 +365,17 @@ class _MentoringPageState extends State<MentoringPage>
     children: [
       Text(
         v,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
       ),
-      const SizedBox(height: 2),
+      SizedBox(height: 2),
       Text(
         l,
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white60,
           fontSize: 11,
           height: 1.3,
@@ -389,7 +417,7 @@ class _MentoringPageState extends State<MentoringPage>
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color:
@@ -433,7 +461,7 @@ class _MentoringPageState extends State<MentoringPage>
                           onChanged: (v) => setState(() => m.selected = v!),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
 
                       // Date badge + outcome
                       Expanded(
@@ -447,21 +475,21 @@ class _MentoringPageState extends State<MentoringPage>
                                 vertical: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(
+                                  Icon(
                                     Icons.calendar_today_rounded,
                                     size: 12,
                                     color: Colors.white70,
                                   ),
-                                  const SizedBox(width: 5),
+                                  SizedBox(width: 5),
                                   Text(
                                     m.date,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 12,
                                       fontWeight: FontWeight.w600,
@@ -470,13 +498,13 @@ class _MentoringPageState extends State<MentoringPage>
                                 ],
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Text(
                               m.outcome,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ],
@@ -497,13 +525,13 @@ class _MentoringPageState extends State<MentoringPage>
                           children: [
                             Text(
                               '${m.mentees}',
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
                                 color: Color(0xFF1565C0),
                               ),
                             ),
-                            const Text(
+                            Text(
                               'mentees',
                               style: TextStyle(
                                 fontSize: 10,
@@ -517,9 +545,9 @@ class _MentoringPageState extends State<MentoringPage>
                     ],
                   ),
 
-                  const SizedBox(height: 14),
-                  const Divider(height: 1, color: Color(0xFFF0F4F8)),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 14),
+                  Divider(height: 1, color: Color(0xFFF0F4F8)),
+                  SizedBox(height: 12),
 
                   // ── Bottom row ────────────────────────────────────
                   Row(
@@ -538,7 +566,7 @@ class _MentoringPageState extends State<MentoringPage>
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(statusIcon, size: 14, color: statusColor),
-                            const SizedBox(width: 5),
+                            SizedBox(width: 5),
                             Text(
                               statusLabel,
                               style: TextStyle(
@@ -559,13 +587,13 @@ class _MentoringPageState extends State<MentoringPage>
                         const Color(0xFF1565C0),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconBtn(
                         Icons.delete_outline_rounded,
                         const Color(0xFFE53935),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconBtn(
                         Icons.picture_as_pdf_outlined,
                         const Color(0xFF546E7A),
@@ -611,8 +639,8 @@ class _MentoringPageState extends State<MentoringPage>
             minChildSize: 0.4,
             builder:
                 (_, ctrl) => Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
                     ),
@@ -631,7 +659,7 @@ class _MentoringPageState extends State<MentoringPage>
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       Row(
                         children: [
@@ -641,20 +669,20 @@ class _MentoringPageState extends State<MentoringPage>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0A2540),
+                              color: Theme.of(context).colorScheme.onSurface,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Row(
                               children: [
-                                const Icon(
+                                Icon(
                                   Icons.calendar_today_rounded,
                                   size: 13,
                                   color: Colors.white70,
                                 ),
-                                const SizedBox(width: 6),
+                                SizedBox(width: 6),
                                 Text(
                                   m.date,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 13,
@@ -663,23 +691,23 @@ class _MentoringPageState extends State<MentoringPage>
                               ],
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               m.outcome,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
                         ],
                       ),
 
-                      const SizedBox(height: 24),
-                      const Divider(color: Color(0xFFF0F4F8)),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 24),
+                      Divider(color: Color(0xFFF0F4F8)),
+                      SizedBox(height: 16),
 
                       _detRow('Date', m.date),
                       _detRow('Mentees Present', '${m.mentees}'),
@@ -689,14 +717,14 @@ class _MentoringPageState extends State<MentoringPage>
                         m.minutesUploaded ? 'Minutes uploaded' : 'Pending',
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       Row(
                         children: [
                           Expanded(
                             child: OutlinedButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: const Text('Edit'),
+                              icon: Icon(Icons.edit_outlined, size: 18),
+                              label: Text('Edit'),
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
@@ -707,17 +735,17 @@ class _MentoringPageState extends State<MentoringPage>
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: FilledButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.upload_file_rounded,
                                 size: 18,
                               ),
-                              label: const Text('Upload Minutes'),
+                              label: Text('Upload Minutes'),
                               style: FilledButton.styleFrom(
-                                backgroundColor: const Color(0xFF0A2540),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
                                 ),
@@ -742,19 +770,19 @@ class _MentoringPageState extends State<MentoringPage>
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13.5,
-            color: Color(0xFF78909C),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),
         const Spacer(),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF0A2540),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
@@ -775,8 +803,8 @@ class _MentoringPageState extends State<MentoringPage>
             minChildSize: 0.5,
             builder:
                 (_, ctrl) => Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
                     ),
@@ -795,47 +823,47 @@ class _MentoringPageState extends State<MentoringPage>
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
-                      const Text(
+                      Text(
                         'Log Meeting',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
-                          color: Color(0xFF0A2540),
+                          color: Theme.of(context).colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 4),
-                      const Text(
+                      SizedBox(height: 4),
+                      Text(
                         'Record mentoring session details and upload meeting minutes.',
                         style: TextStyle(
                           fontSize: 13,
-                          color: Color(0xFF90A4AE),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
 
                       _addField(
                         'Meeting Date',
                         Icons.calendar_today_outlined,
                         hint: 'e.g. 05 Mar 2025',
                       ),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
                       _addField(
                         'Number of Mentees',
                         Icons.people_outline_rounded,
                         hint: 'e.g. 12',
                         keyboardType: TextInputType.number,
                       ),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
                       _addField(
                         'Outcome / Topic',
                         Icons.topic_outlined,
                         hint: 'e.g. Semester planning',
                         maxLines: 2,
                       ),
-                      const SizedBox(height: 14),
+                      SizedBox(height: 14),
 
                       // Upload minutes button
                       InkWell(
@@ -862,14 +890,14 @@ class _MentoringPageState extends State<MentoringPage>
                                   ).withOpacity(0.1),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.upload_file_rounded,
                                   color: Color(0xFF1565C0),
                                   size: 22,
                                 ),
                               ),
-                              const SizedBox(width: 14),
-                              const Expanded(
+                              SizedBox(width: 14),
+                              Expanded(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -886,23 +914,23 @@ class _MentoringPageState extends State<MentoringPage>
                                       'PDF or DOCX, max 5MB',
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Color(0xFF90A4AE),
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_ios_rounded,
                                 size: 14,
-                                color: Color(0xFF90A4AE),
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                             ],
                           ),
                         ),
                       ),
 
-                      const SizedBox(height: 28),
+                      SizedBox(height: 28),
 
                       // Info note
                       Container(
@@ -914,13 +942,13 @@ class _MentoringPageState extends State<MentoringPage>
                         ),
                         child: Row(
                           children: [
-                            const Icon(
+                            Icon(
                               Icons.info_outline_rounded,
                               size: 16,
                               color: Color(0xFF1565C0),
                             ),
-                            const SizedBox(width: 8),
-                            const Expanded(
+                            SizedBox(width: 8),
+                            Expanded(
                               child: Text(
                                 'Upload minutes of meeting to be eligible for points in APR.',
                                 style: TextStyle(
@@ -934,12 +962,12 @@ class _MentoringPageState extends State<MentoringPage>
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
 
                       FilledButton.icon(
                         onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.check_rounded),
-                        label: const Text(
+                        icon: Icon(Icons.check_rounded),
+                        label: Text(
                           'Save Meeting',
                           style: TextStyle(
                             fontWeight: FontWeight.w700,
@@ -947,7 +975,7 @@ class _MentoringPageState extends State<MentoringPage>
                           ),
                         ),
                         style: FilledButton.styleFrom(
-                          backgroundColor: const Color(0xFF0A2540),
+                          backgroundColor: Theme.of(context).colorScheme.primary,
                           minimumSize: const Size(double.infinity, 52),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
@@ -974,22 +1002,22 @@ class _MentoringPageState extends State<MentoringPage>
       decoration: InputDecoration(
         labelText: label,
         hintText: hint,
-        hintStyle: const TextStyle(color: Color(0xFFB0BEC5)),
-        prefixIcon: Icon(icon, size: 18, color: const Color(0xFF78909C)),
+        hintStyle: TextStyle(color: Color(0xFFB0BEC5)),
+        prefixIcon: Icon(icon, size: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE0E7EF)),
+          borderSide: BorderSide(color: Color(0xFFE0E7EF)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE0E7EF)),
+          borderSide: BorderSide(color: Color(0xFFE0E7EF)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF1565C0), width: 1.5),
+          borderSide: BorderSide(color: Color(0xFF1565C0), width: 1.5),
         ),
         filled: true,
-        fillColor: const Color(0xFFF8FAFD),
+        fillColor: Theme.of(context).colorScheme.surface,
       ),
     );
   }
@@ -999,14 +1027,14 @@ class _MentoringPageState extends State<MentoringPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
-      drawer: _buildDrawer(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.mentoring),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 0,
         titleSpacing: 0,
-        title: const Text(
+        title: Text(
           'Mentoring',
           style: TextStyle(
             color: Colors.white,
@@ -1016,20 +1044,17 @@ class _MentoringPageState extends State<MentoringPage>
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.dark_mode_outlined, color: Colors.white70),
-            onPressed: () {},
-          ),
-          const CircleAvatar(
+          ThemeToggleButton(),
+          CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xFF1E3A5F),
             child: Icon(Icons.person, size: 18, color: Colors.white70),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
         ],
       ),
       body: RefreshIndicator(
-        color: const Color(0xFF0A2540),
+        color: Theme.of(context).colorScheme.primary,
         onRefresh: () async => Future.delayed(const Duration(seconds: 1)),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -1043,22 +1068,22 @@ class _MentoringPageState extends State<MentoringPage>
                   children: [
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           'Mentoring Records',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF0A2540),
+                            color: Theme.of(context).colorScheme.onSurface,
                             letterSpacing: -0.3,
                           ),
                         ),
                         const Spacer(),
                         FilledButton.icon(
                           onPressed: _showLogMeetingSheet,
-                          icon: const Icon(Icons.add_rounded, size: 18),
-                          label: const Text('Log meeting'),
+                          icon: Icon(Icons.add_rounded, size: 18),
+                          label: Text('Log meeting'),
                           style: FilledButton.styleFrom(
-                            backgroundColor: const Color(0xFF0A2540),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 10,
@@ -1070,7 +1095,7 @@ class _MentoringPageState extends State<MentoringPage>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
 
                     // Info banner
                     Container(
@@ -1082,13 +1107,13 @@ class _MentoringPageState extends State<MentoringPage>
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.info_outline_rounded,
                             size: 18,
                             color: Color(0xFF1565C0),
                           ),
-                          const SizedBox(width: 10),
-                          const Expanded(
+                          SizedBox(width: 10),
+                          Expanded(
                             child: Text(
                               'Upload minutes of meeting to be eligible for points in APR.',
                               style: TextStyle(
@@ -1110,7 +1135,7 @@ class _MentoringPageState extends State<MentoringPage>
             SliverToBoxAdapter(child: _buildSummaryStrip()),
 
             // ── Section label ─────────────────────────────────────────
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
                 child: Text(
@@ -1118,7 +1143,7 @@ class _MentoringPageState extends State<MentoringPage>
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0A2540),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -1138,24 +1163,24 @@ class _MentoringPageState extends State<MentoringPage>
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   '${_meetings.length} of ${_meetings.length} records',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12.5,
-                    color: Color(0xFF90A4AE),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showLogMeetingSheet,
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add_rounded),
-        label: const Text(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+        icon: Icon(Icons.add_rounded),
+        label: Text(
           'Log Meeting',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),

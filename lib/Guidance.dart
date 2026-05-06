@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_navigation.dart';
 import 'app_theme.dart';
-import 'DB2main.dart';
-import 'mainprofilepage.dart';
+import 'publicationPage.dart';
 
 // ─── Data Model ───────────────────────────────────────────────────────────────
 
@@ -81,6 +81,7 @@ class _GuidancePageState extends State<GuidancePage>
 
   // ─── Drawer ──────────────────────────────────────────────────────────────────
 
+  // ignore: unused_element
   Widget _buildDrawer() {
     return Drawer(
       backgroundColor: const Color(0xFFFAFAFD),
@@ -88,7 +89,7 @@ class _GuidancePageState extends State<GuidancePage>
         padding: EdgeInsets.zero,
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -104,14 +105,14 @@ class _GuidancePageState extends State<GuidancePage>
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white30, width: 2),
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 32,
                     backgroundColor: Color(0xFF1E3A5F),
                     child: Icon(Icons.person, size: 36, color: Colors.white70),
                   ),
                 ),
-                const SizedBox(height: 14),
-                const Text(
+                SizedBox(height: 14),
+                Text(
                   'Faculty Member',
                   style: TextStyle(
                     color: Colors.white,
@@ -119,15 +120,15 @@ class _GuidancePageState extends State<GuidancePage>
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
-                const Text(
+                SizedBox(height: 3),
+                Text(
                   '23bee006@smvdu.ac.in',
                   style: TextStyle(color: Colors.white60, fontSize: 12.5),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
 
           // Dashboard — navigates back
           _dItem(
@@ -173,8 +174,30 @@ class _GuidancePageState extends State<GuidancePage>
           ),
 
           _dSection('Research'),
-          _dItem(Icons.article_outlined, 'My Publications & IP', false),
-          _dSub(Icons.library_books_outlined, 'Publications', false),
+          _dItem(
+            Icons.article_outlined,
+            'My Publications & IP',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
+          _dSub(
+            Icons.library_books_outlined,
+            'Publications',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
           _dSub(Icons.verified_outlined, 'IP & Patents', false),
           _dItem(
             Icons.business_center_outlined,
@@ -200,10 +223,10 @@ class _GuidancePageState extends State<GuidancePage>
           _dSub(Icons.edit_note_outlined, 'Prepare APR', false),
           _dSub(Icons.send_outlined, 'Preview & Submit', false),
 
-          const SizedBox(height: 8),
-          const Divider(indent: 16, endIndent: 16),
+          SizedBox(height: 8),
+          Divider(indent: 16, endIndent: 16),
           _dItem(Icons.logout_rounded, 'Logout', false, isLogout: true),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -213,10 +236,10 @@ class _GuidancePageState extends State<GuidancePage>
     padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
     child: Text(
       label.toUpperCase(),
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 10.5,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF90A4AE),
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
         letterSpacing: 1.2,
       ),
     ),
@@ -312,7 +335,7 @@ class _GuidancePageState extends State<GuidancePage>
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF0A2540).withOpacity(0.25),
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
             blurRadius: 16,
             offset: const Offset(0, 5),
           ),
@@ -337,17 +360,17 @@ class _GuidancePageState extends State<GuidancePage>
     children: [
       Text(
         v,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white,
           fontSize: 20,
           fontWeight: FontWeight.w800,
         ),
       ),
-      const SizedBox(height: 2),
+      SizedBox(height: 2),
       Text(
         l,
         textAlign: TextAlign.center,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.white60,
           fontSize: 11,
           height: 1.3,
@@ -392,7 +415,7 @@ class _GuidancePageState extends State<GuidancePage>
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color:
@@ -436,7 +459,7 @@ class _GuidancePageState extends State<GuidancePage>
                           onChanged: (v) => setState(() => s.selected = v!),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
 
                       // Program badge + student name
                       Expanded(
@@ -456,7 +479,7 @@ class _GuidancePageState extends State<GuidancePage>
                                   ),
                                   child: Text(
                                     s.program,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       color: Colors.white,
                                       fontSize: 11,
                                       fontWeight: FontWeight.w700,
@@ -464,7 +487,7 @@ class _GuidancePageState extends State<GuidancePage>
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 8,
@@ -476,7 +499,7 @@ class _GuidancePageState extends State<GuidancePage>
                                   ),
                                   child: Text(
                                     s.ftPt,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 11,
                                       fontWeight: FontWeight.w600,
                                       color: Color(0xFF546E7A),
@@ -485,13 +508,13 @@ class _GuidancePageState extends State<GuidancePage>
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 6),
+                            SizedBox(height: 6),
                             Text(
                               s.student,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ],
@@ -523,7 +546,7 @@ class _GuidancePageState extends State<GuidancePage>
                     ],
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // ── Research title ────────────────────────────────
                   Container(
@@ -538,19 +561,19 @@ class _GuidancePageState extends State<GuidancePage>
                     ),
                     child: Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.auto_stories_outlined,
                           size: 15,
-                          color: Color(0xFF78909C),
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                         ),
-                        const SizedBox(width: 8),
+                        SizedBox(width: 8),
                         Expanded(
                           child: Text(
                             s.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.w500,
-                              color: Color(0xFF37474F),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ),
@@ -558,7 +581,7 @@ class _GuidancePageState extends State<GuidancePage>
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
 
                   // ── Bottom row ────────────────────────────────────
                   Row(
@@ -569,7 +592,7 @@ class _GuidancePageState extends State<GuidancePage>
                         'Reg. ${s.regYear}',
                         const Color(0xFF546E7A),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
 
                       // Synopsis status
                       _chip(
@@ -593,13 +616,13 @@ class _GuidancePageState extends State<GuidancePage>
                         const Color(0xFF1565C0),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconBtn(
                         Icons.delete_outline_rounded,
                         const Color(0xFFE53935),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconBtn(
                         Icons.picture_as_pdf_outlined,
                         const Color(0xFF546E7A),
@@ -632,7 +655,7 @@ class _GuidancePageState extends State<GuidancePage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(icon, size: 13, color: color),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
           Text(
             label,
             style: TextStyle(
@@ -675,8 +698,8 @@ class _GuidancePageState extends State<GuidancePage>
             minChildSize: 0.4,
             builder:
                 (_, ctrl) => Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
                     ),
@@ -695,7 +718,7 @@ class _GuidancePageState extends State<GuidancePage>
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
 
                       // Header
                       Row(
@@ -706,44 +729,44 @@ class _GuidancePageState extends State<GuidancePage>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0A2540),
+                              color: Theme.of(context).colorScheme.onSurface,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
                               s.program,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 13,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 10),
+                          SizedBox(width: 10),
                           Expanded(
                             child: Text(
                               s.student,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: 6),
                       Text(
                         s.title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 14,
                           color: Color(0xFF546E7A),
                           height: 1.4,
                         ),
                       ),
 
-                      const SizedBox(height: 24),
-                      const Divider(color: Color(0xFFF0F4F8)),
-                      const SizedBox(height: 16),
+                      SizedBox(height: 24),
+                      Divider(color: Color(0xFFF0F4F8)),
+                      SizedBox(height: 16),
 
                       _detRow('Program', s.program),
                       _detRow('Student', s.student),
@@ -759,14 +782,14 @@ class _GuidancePageState extends State<GuidancePage>
                         s.synopsisUploaded ? 'Uploaded' : 'Pending',
                       ),
 
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       Row(
                         children: [
                           Expanded(
                             child: OutlinedButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: const Text('Edit'),
+                              icon: Icon(Icons.edit_outlined, size: 18),
+                              label: Text('Edit'),
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
@@ -777,17 +800,17 @@ class _GuidancePageState extends State<GuidancePage>
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: FilledButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.upload_file_rounded,
                                 size: 18,
                               ),
-                              label: const Text('Upload Synopsis'),
+                              label: Text('Upload Synopsis'),
                               style: FilledButton.styleFrom(
-                                backgroundColor: const Color(0xFF0A2540),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
                                 ),
@@ -812,19 +835,19 @@ class _GuidancePageState extends State<GuidancePage>
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13.5,
-            color: Color(0xFF78909C),
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             fontWeight: FontWeight.w500,
           ),
         ),
         const Spacer(),
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 13.5,
             fontWeight: FontWeight.w700,
-            color: Color(0xFF0A2540),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
       ],
@@ -850,8 +873,8 @@ class _GuidancePageState extends State<GuidancePage>
                   minChildSize: 0.5,
                   builder:
                       (_, ctrl) => Container(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
+                        decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.vertical(
                             top: Radius.circular(24),
                           ),
@@ -870,27 +893,27 @@ class _GuidancePageState extends State<GuidancePage>
                                 ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            const Text(
+                            SizedBox(height: 20),
+                            Text(
                               'Add Supervisee',
                               style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w800,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
-                            const SizedBox(height: 4),
-                            const Text(
+                            SizedBox(height: 4),
+                            Text(
                               'Capture UG/PG/PhD supervision details and milestones.',
                               style: TextStyle(
                                 fontSize: 13,
-                                color: Color(0xFF90A4AE),
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
                               ),
                             ),
-                            const SizedBox(height: 24),
+                            SizedBox(height: 24),
 
                             // Program selector
-                            const Text(
+                            Text(
                               'Program',
                               style: TextStyle(
                                 fontSize: 13,
@@ -898,7 +921,7 @@ class _GuidancePageState extends State<GuidancePage>
                                 color: Color(0xFF546E7A),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Wrap(
                               spacing: 8,
                               children:
@@ -927,24 +950,24 @@ class _GuidancePageState extends State<GuidancePage>
                                       .toList(),
                             ),
 
-                            const SizedBox(height: 18),
+                            SizedBox(height: 18),
                             _addField('Student Name', Icons.person_outline),
-                            const SizedBox(height: 14),
+                            SizedBox(height: 14),
                             _addField(
                               'Research Title',
                               Icons.auto_stories_outlined,
                               maxLines: 2,
                             ),
-                            const SizedBox(height: 14),
+                            SizedBox(height: 14),
                             _addField(
                               'Registration Year',
                               Icons.calendar_today_outlined,
                               keyboardType: TextInputType.number,
                             ),
 
-                            const SizedBox(height: 18),
+                            SizedBox(height: 18),
                             // FT/PT
-                            const Text(
+                            Text(
                               'Full Time / Part Time',
                               style: TextStyle(
                                 fontSize: 13,
@@ -952,7 +975,7 @@ class _GuidancePageState extends State<GuidancePage>
                                 color: Color(0xFF546E7A),
                               ),
                             ),
-                            const SizedBox(height: 8),
+                            SizedBox(height: 8),
                             Row(
                               children: [
                                 Expanded(
@@ -965,7 +988,7 @@ class _GuidancePageState extends State<GuidancePage>
                                     },
                                   ),
                                 ),
-                                const SizedBox(width: 10),
+                                SizedBox(width: 10),
                                 Expanded(
                                   child: _ftPtChip(
                                     'Part Time',
@@ -979,11 +1002,11 @@ class _GuidancePageState extends State<GuidancePage>
                               ],
                             ),
 
-                            const SizedBox(height: 28),
+                            SizedBox(height: 28),
                             FilledButton.icon(
                               onPressed: () => Navigator.pop(ctx),
-                              icon: const Icon(Icons.add_rounded),
-                              label: const Text(
+                              icon: Icon(Icons.add_rounded),
+                              label: Text(
                                 'Add Supervisee',
                                 style: TextStyle(
                                   fontWeight: FontWeight.w700,
@@ -991,7 +1014,7 @@ class _GuidancePageState extends State<GuidancePage>
                                 ),
                               ),
                               style: FilledButton.styleFrom(
-                                backgroundColor: const Color(0xFF0A2540),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 minimumSize: const Size(double.infinity, 52),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(14),
@@ -1017,21 +1040,21 @@ class _GuidancePageState extends State<GuidancePage>
       keyboardType: keyboardType,
       decoration: InputDecoration(
         labelText: label,
-        prefixIcon: Icon(icon, size: 18, color: const Color(0xFF78909C)),
+        prefixIcon: Icon(icon, size: 18, color: Theme.of(context).colorScheme.onSurfaceVariant),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE0E7EF)),
+          borderSide: BorderSide(color: Color(0xFFE0E7EF)),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFFE0E7EF)),
+          borderSide: BorderSide(color: Color(0xFFE0E7EF)),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Color(0xFF1565C0), width: 1.5),
+          borderSide: BorderSide(color: Color(0xFF1565C0), width: 1.5),
         ),
         filled: true,
-        fillColor: const Color(0xFFF8FAFD),
+        fillColor: Theme.of(context).colorScheme.surface,
       ),
     );
   }
@@ -1070,14 +1093,14 @@ class _GuidancePageState extends State<GuidancePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
-      drawer: _buildDrawer(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.guidance),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 0,
         titleSpacing: 0,
-        title: const Text(
+        title: Text(
           'Guidance',
           style: TextStyle(
             color: Colors.white,
@@ -1103,16 +1126,16 @@ class _GuidancePageState extends State<GuidancePage>
               toggleAppTheme();
             },
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xFF1E3A5F),
             child: Icon(Icons.person, size: 18, color: Colors.white70),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
         ],
       ),
       body: RefreshIndicator(
-        color: const Color(0xFF0A2540),
+        color: Theme.of(context).colorScheme.primary,
         onRefresh: () async => Future.delayed(const Duration(seconds: 1)),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -1126,22 +1149,22 @@ class _GuidancePageState extends State<GuidancePage>
                   children: [
                     Row(
                       children: [
-                        const Text(
+                        Text(
                           'Guidance',
                           style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w800,
-                            color: Color(0xFF0A2540),
+                            color: Theme.of(context).colorScheme.onSurface,
                             letterSpacing: -0.3,
                           ),
                         ),
                         const Spacer(),
                         FilledButton.icon(
                           onPressed: _showAddSheet,
-                          icon: const Icon(Icons.add_rounded, size: 18),
-                          label: const Text('Add supervisee'),
+                          icon: Icon(Icons.add_rounded, size: 18),
+                          label: Text('Add supervisee'),
                           style: FilledButton.styleFrom(
-                            backgroundColor: const Color(0xFF0A2540),
+                            backgroundColor: Theme.of(context).colorScheme.primary,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 14,
                               vertical: 10,
@@ -1153,7 +1176,7 @@ class _GuidancePageState extends State<GuidancePage>
                         ),
                       ],
                     ),
-                    const SizedBox(height: 12),
+                    SizedBox(height: 12),
 
                     // Info banner
                     Container(
@@ -1165,13 +1188,13 @@ class _GuidancePageState extends State<GuidancePage>
                       ),
                       child: Row(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.info_outline_rounded,
                             size: 18,
                             color: Color(0xFF1565C0),
                           ),
-                          const SizedBox(width: 10),
-                          const Expanded(
+                          SizedBox(width: 10),
+                          Expanded(
                             child: Text(
                               'Capture guidance for UG/PG/PhD, including co-supervisors, submission milestones and outcome evidence.',
                               style: TextStyle(
@@ -1193,7 +1216,7 @@ class _GuidancePageState extends State<GuidancePage>
             SliverToBoxAdapter(child: _buildSummaryStrip()),
 
             // Section header
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 20, 16, 4),
                 child: Text(
@@ -1201,7 +1224,7 @@ class _GuidancePageState extends State<GuidancePage>
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0A2540),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -1221,24 +1244,24 @@ class _GuidancePageState extends State<GuidancePage>
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   '${_supervisees.length} of ${_supervisees.length} records',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12.5,
-                    color: Color(0xFF90A4AE),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showAddSheet,
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add_rounded),
-        label: const Text(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+        icon: Icon(Icons.add_rounded),
+        label: Text(
           'Add Supervisee',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),

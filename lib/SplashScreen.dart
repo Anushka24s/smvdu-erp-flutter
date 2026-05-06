@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 
-// Make sure these imports point to your actual file locations
-import 'login.dart'; // ← your Login screen file
-import 'dashboard.dart'; // ← your Dashboard screen file (adjust name if different)
+import 'Login.dart';
+import 'DB2main.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -55,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen>
     if (isLoggedIn) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        MaterialPageRoute(builder: (context) => const DashboardPage()),
       );
     } else {
       Navigator.pushReplacement(

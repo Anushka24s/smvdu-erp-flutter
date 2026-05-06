@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'app_theme.dart';
+import 'app_navigation.dart';
+import 'Login.dart';
 import 'mainprofilepage.dart';
 import 'Guidance.dart';
 import 'mentoringPage.dart';
+import 'publicationPage.dart';
+import 'patents.dart';
+import 'projects.dart';
+import 'conference.dart';
+import 'events_org.dart' as events_org;
+import 'prepareApr.dart';
+import 'previewApr.dart' as preview_apr;
+import 'service.dart';
 
 // Global theme notifier — define once, use everywhere
 
@@ -25,6 +35,23 @@ class FacultyApp extends StatelessWidget {
             theme: buildLightTheme(),
             darkTheme: buildDarkTheme(),
             home: const DashboardPage(),
+            routes: {
+              AppRoute.dashboard: (_) => const DashboardPage(),
+              AppRoute.profile: (_) => const ProfileScreen(),
+              AppRoute.teaching: (_) => const TeachingAssignmentsPage(),
+              AppRoute.mentoring: (_) => const MentoringPage(),
+              AppRoute.guidance: (_) => const GuidancePage(),
+              AppRoute.publications: (_) => const PublicationsPage(),
+              AppRoute.patents: (_) => const IpPatentsPage(),
+              AppRoute.projects: (_) => const ProjectsConsultancyPage(),
+              AppRoute.conferences: (_) => const ConferencesAttendedPage(),
+              AppRoute.eventsOrganized:
+                  (_) => const events_org.ConferencesAttendedPage(),
+              AppRoute.service: (_) => const PreviewSubmitScreen(),
+              AppRoute.prepareApr: (_) => const PrepareAprPage(),
+              AppRoute.previewApr: (_) => const preview_apr.PreviewAprPage(),
+              AppRoute.login: (_) => const LoginScreen(),
+            },
           ),
     );
   }
@@ -119,19 +146,6 @@ class AppDrawer extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          _drawerItem(
-            context,
-            Icons.person_outline,
-            'My Profile',
-            false,
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ProfileScreen()),
-              );
-            },
-          ),
           _drawerSection(context, 'Teaching & Mentoring'),
           _drawerItem(
             context,
@@ -186,24 +200,54 @@ class AppDrawer extends StatelessWidget {
             Icons.article_outlined,
             'My Publications & IP',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
           ),
           _drawerSubItem(
             context,
             Icons.library_books_outlined,
             'Publications',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
           ),
           _drawerSubItem(
             context,
             Icons.verified_outlined,
             'IP & Patents',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(builder: (_) => const IpPatentsPage()),
+              );
+            },
           ),
           _drawerItem(
             context,
             Icons.business_center_outlined,
             'Projects & Consultancy',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(
+                  builder: (_) => const ProjectsConsultancyPage(),
+                ),
+              );
+            },
           ),
           _drawerSection(context, 'Events & Service'),
           _drawerItem(
@@ -211,12 +255,30 @@ class AppDrawer extends StatelessWidget {
             Icons.event_note_outlined,
             'Conferences / FDP / Workshops',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(
+                  builder: (_) => const ConferencesAttendedPage(),
+                ),
+              );
+            },
           ),
           _drawerItem(
             context,
             Icons.campaign_outlined,
             'Events Organized',
             false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                parentContext,
+                MaterialPageRoute(
+                  builder: (_) => const events_org.ConferencesAttendedPage(),
+                ),
+              );
+            },
           ),
           _drawerItem(
             context,
@@ -246,6 +308,14 @@ class AppDrawer extends StatelessWidget {
             'Logout',
             false,
             isLogout: true,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                parentContext,
+                AppRoute.login,
+                (_) => false,
+              );
+            },
           ),
 
           const SizedBox(height: 16),
@@ -396,6 +466,26 @@ class _DashboardPageState extends State<DashboardPage>
     super.dispose();
   }
 
+  bool get _isDark => Theme.of(context).brightness == Brightness.dark;
+  Color get _pageBg => Theme.of(context).scaffoldBackgroundColor;
+  Color get _surface => Theme.of(context).colorScheme.surface;
+  Color get _surfaceAlt =>
+      _isDark ? const Color(0xFF21262D) : const Color(0xFFF8FAFD);
+  Color get _primaryText =>
+      _isDark ? const Color(0xFFE6EDF3) : const Color(0xFF0A2540);
+  Color get _bodyText =>
+      _isDark ? const Color(0xFFC9D1D9) : const Color(0xFF37474F);
+  Color get _mutedText =>
+      _isDark ? const Color(0xFF8B949E) : const Color(0xFF90A4AE);
+  Color get _borderColor =>
+      _isDark ? const Color(0xFF30363D) : const Color(0xFFECF0F5);
+  Color get _shadowColor =>
+      _isDark
+          ? Colors.black.withValues(alpha: 0.28)
+          : Colors.black.withOpacity(0.05);
+  Color get _appBarColor => Theme.of(context).appBarTheme.backgroundColor!;
+  Color get _primaryAccent => Theme.of(context).colorScheme.primary;
+
   // ─── Stat Cards ─────────────────────────────────────────────────────────────
 
   Widget _buildStatGrid() {
@@ -478,11 +568,11 @@ class _DashboardPageState extends State<DashboardPage>
       child: Container(
         padding: EdgeInsets.all(wide ? 16 : 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: _surface,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: _shadowColor,
               blurRadius: 14,
               offset: const Offset(0, 3),
             ),
@@ -512,9 +602,8 @@ class _DashboardPageState extends State<DashboardPage>
                           s['label'] as String,
                           style: const TextStyle(
                             fontSize: 12,
-                            color: Color(0xFF78909C),
                             fontWeight: FontWeight.w500,
-                          ),
+                          ).copyWith(color: _mutedText),
                         ),
                         Text(
                           s['value'] as String,
@@ -529,10 +618,7 @@ class _DashboardPageState extends State<DashboardPage>
                     const Spacer(),
                     Text(
                       s['sub'] as String,
-                      style: const TextStyle(
-                        fontSize: 12.5,
-                        color: Color(0xFF90A4AE),
-                      ),
+                      style: TextStyle(fontSize: 12.5, color: _mutedText),
                     ),
                   ],
                 )
@@ -569,18 +655,15 @@ class _DashboardPageState extends State<DashboardPage>
                     const SizedBox(height: 4),
                     Text(
                       s['label'] as String,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF0A2540),
+                        color: _primaryText,
                       ),
                     ),
                     Text(
                       s['sub'] as String,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF90A4AE),
-                      ),
+                      style: TextStyle(fontSize: 11, color: _mutedText),
                     ),
                   ],
                 ),
@@ -595,11 +678,11 @@ class _DashboardPageState extends State<DashboardPage>
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: _surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: _shadowColor,
             blurRadius: 14,
             offset: const Offset(0, 3),
           ),
@@ -612,19 +695,19 @@ class _DashboardPageState extends State<DashboardPage>
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Points by Category',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF0A2540),
+                      color: _primaryText,
                     ),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
                     'Based on stored records',
-                    style: TextStyle(fontSize: 12, color: Color(0xFF90A4AE)),
+                    style: TextStyle(fontSize: 12, color: _mutedText),
                   ),
                 ],
               ),
@@ -670,10 +753,10 @@ class _DashboardPageState extends State<DashboardPage>
               Expanded(
                 child: Text(
                   cat.label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF37474F),
+                    color: _bodyText,
                   ),
                 ),
               ),
@@ -708,7 +791,10 @@ class _DashboardPageState extends State<DashboardPage>
                   (_, value, __) => LinearProgressIndicator(
                     value: value,
                     minHeight: 8,
-                    backgroundColor: const Color(0xFFF0F4F8),
+                    backgroundColor:
+                        _isDark
+                            ? const Color(0xFF30363D)
+                            : const Color(0xFFF0F4F8),
                     valueColor: AlwaysStoppedAnimation<Color>(cat.color),
                   ),
             ),
@@ -725,11 +811,11 @@ class _DashboardPageState extends State<DashboardPage>
       margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: _surface,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: _shadowColor,
             blurRadius: 14,
             offset: const Offset(0, 3),
           ),
@@ -742,19 +828,19 @@ class _DashboardPageState extends State<DashboardPage>
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Upcoming Deadlines',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF0A2540),
+                      color: _primaryText,
                     ),
                   ),
-                  SizedBox(height: 2),
+                  const SizedBox(height: 2),
                   Text(
                     'Stay ahead with pending actions',
-                    style: TextStyle(fontSize: 12, color: Color(0xFF90A4AE)),
+                    style: TextStyle(fontSize: 12, color: _mutedText),
                   ),
                 ],
               ),
@@ -778,9 +864,9 @@ class _DashboardPageState extends State<DashboardPage>
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFD),
+        color: _surfaceAlt,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: const Color(0xFFECF0F5)),
+        border: Border.all(color: _borderColor),
       ),
       child: Row(
         children: [
@@ -799,10 +885,10 @@ class _DashboardPageState extends State<DashboardPage>
               children: [
                 Text(
                   d.title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF0A2540),
+                    color: _primaryText,
                   ),
                 ),
                 const SizedBox(height: 5),
@@ -835,10 +921,7 @@ class _DashboardPageState extends State<DashboardPage>
                     const SizedBox(width: 3),
                     Text(
                       d.date,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Color(0xFF90A4AE),
-                      ),
+                      style: TextStyle(fontSize: 11, color: _mutedText),
                     ),
                   ],
                 ),
@@ -894,13 +977,12 @@ class _DashboardPageState extends State<DashboardPage>
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Quick Access',
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF0A2540),
-            ),
+            ).copyWith(color: _primaryText),
           ),
           const SizedBox(height: 12),
           Row(
@@ -962,10 +1044,10 @@ class _DashboardPageState extends State<DashboardPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
-      drawer: AppDrawer(parentContext: context),
+      backgroundColor: _pageBg,
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.dashboard),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A2540),
+        backgroundColor: _appBarColor,
         foregroundColor: Colors.white,
         elevation: 0,
         titleSpacing: 0,
@@ -994,16 +1076,22 @@ class _DashboardPageState extends State<DashboardPage>
               toggleAppTheme();
             },
           ),
-          const CircleAvatar(
-            radius: 16,
-            backgroundColor: Color(0xFF1E3A5F),
-            child: Icon(Icons.person, size: 18, color: Colors.white70),
+          IconButton(
+            tooltip: 'My Profile',
+            onPressed: () {
+              Navigator.pushNamed(context, AppRoute.profile);
+            },
+            icon: const CircleAvatar(
+              radius: 16,
+              backgroundColor: Color(0xFF1E3A5F),
+              child: Icon(Icons.person, size: 18, color: Colors.white70),
+            ),
           ),
           const SizedBox(width: 12),
         ],
       ),
       body: RefreshIndicator(
-        color: const Color(0xFF0A2540),
+        color: _primaryAccent,
         onRefresh: () async => Future.delayed(const Duration(seconds: 1)),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -1801,7 +1889,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4F8),
-      drawer: AppDrawer(parentContext: context),
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.teaching),
       appBar: AppBar(
         backgroundColor: const Color(0xFF0A2540),
         foregroundColor: Colors.white,

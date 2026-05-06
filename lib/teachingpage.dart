@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'app_navigation.dart';
 import 'app_theme.dart';
-
+import 'publicationPage.dart';
 
 void main() {
   runApp(const FacultyApp());
 }
-
 
 class FacultyApp extends StatelessWidget {
   const FacultyApp({super.key});
@@ -110,6 +110,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
 
   // ─── Drawer ────────────────────────────────────────────────────────────────
 
+  // ignore: unused_element
   Widget _buildDrawer() {
     return Drawer(
       backgroundColor: const Color(0xFFFAFAFD),
@@ -117,7 +118,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         padding: EdgeInsets.zero,
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -140,14 +141,14 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                       ),
                     ],
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 32,
                     backgroundColor: Color(0xFF1E3A5F),
                     child: Icon(Icons.person, size: 36, color: Colors.white70),
                   ),
                 ),
-                const SizedBox(height: 14),
-                const Text(
+                SizedBox(height: 14),
+                Text(
                   'Faculty Member',
                   style: TextStyle(
                     color: Colors.white,
@@ -156,15 +157,15 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                     letterSpacing: 0.2,
                   ),
                 ),
-                const SizedBox(height: 3),
-                const Text(
+                SizedBox(height: 3),
+                Text(
                   '23bee006@smvdu.ac.in',
                   style: TextStyle(color: Colors.white60, fontSize: 12.5),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _drawerItem(Icons.dashboard_outlined, 'Dashboard', false),
           _drawerItem(Icons.person_outline, 'My Profile', false),
           _drawerSection('Teaching & Mentoring'),
@@ -177,8 +178,30 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
           _drawerSubItem(Icons.group_outlined, 'Mentoring', false),
           _drawerSubItem(Icons.lightbulb_outline, 'Guidance', false),
           _drawerSection('Research'),
-          _drawerItem(Icons.article_outlined, 'My Publications & IP', false),
-          _drawerSubItem(Icons.library_books_outlined, 'Publications', false),
+          _drawerItem(
+            Icons.article_outlined,
+            'My Publications & IP',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
+          _drawerSubItem(
+            Icons.library_books_outlined,
+            'Publications',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
           _drawerSubItem(Icons.verified_outlined, 'IP & Patents', false),
           _drawerItem(
             Icons.business_center_outlined,
@@ -201,10 +224,10 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
           _drawerItem(Icons.assignment_outlined, 'APR', false),
           _drawerSubItem(Icons.edit_note_outlined, 'Prepare APR', false),
           _drawerSubItem(Icons.send_outlined, 'Preview & Submit', false),
-          const SizedBox(height: 8),
-          const Divider(indent: 16, endIndent: 16),
+          SizedBox(height: 8),
+          Divider(indent: 16, endIndent: 16),
           _drawerItem(Icons.logout_rounded, 'Logout', false, isLogout: true),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -215,10 +238,10 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       padding: const EdgeInsets.fromLTRB(20, 16, 20, 4),
       child: Text(
         label.toUpperCase(),
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 10.5,
           fontWeight: FontWeight.w700,
-          color: Color(0xFF90A4AE),
+          color: Theme.of(context).colorScheme.onSurfaceVariant,
           letterSpacing: 1.2,
         ),
       ),
@@ -230,6 +253,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
     String label,
     bool selected, {
     bool isLogout = false,
+    VoidCallback? onTap,
   }) {
     return ListTile(
       dense: true,
@@ -260,11 +284,16 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       selected: selected,
       selectedTileColor: const Color(0xFFE3F2FD),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      onTap: () => Navigator.pop(context),
+      onTap: onTap ?? () => Navigator.pop(context),
     );
   }
 
-  Widget _drawerSubItem(IconData icon, String label, bool selected) {
+  Widget _drawerSubItem(
+    IconData icon,
+    String label,
+    bool selected, {
+    VoidCallback? onTap,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: ListTile(
@@ -286,7 +315,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         selected: selected,
         selectedTileColor: const Color(0xFFE3F2FD),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        onTap: () => Navigator.pop(context),
+        onTap: onTap ?? () => Navigator.pop(context),
       ),
     );
   }
@@ -299,8 +328,8 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       backgroundColor: Colors.transparent,
       builder:
           (_) => Container(
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
             ),
             padding: const EdgeInsets.fromLTRB(24, 12, 24, 32),
@@ -315,26 +344,26 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const Text(
+                SizedBox(height: 20),
+                Text(
                   'Actions',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 _actionTile(
                   icon: Icons.add_circle_outline_rounded,
                   label: 'Add Course',
-                  color: const Color(0xFF0A2540),
+                  color: Theme.of(context).colorScheme.onSurface,
                   onTap: () => Navigator.pop(context),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 _actionTile(
                   icon: Icons.upload_file_rounded,
                   label: 'Bulk Import',
                   color: const Color(0xFF1565C0),
                   onTap: () => Navigator.pop(context),
                 ),
-                const SizedBox(height: 12),
+                SizedBox(height: 12),
                 _actionTile(
                   icon: Icons.cloud_upload_outlined,
                   label: 'Upload Evidence',
@@ -366,7 +395,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         child: Row(
           children: [
             Icon(icon, color: color, size: 22),
-            const SizedBox(width: 14),
+            SizedBox(width: 14),
             Text(
               label,
               style: TextStyle(
@@ -390,7 +419,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -416,7 +445,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
               ],
             ),
           ),
-          const SizedBox(width: 10),
+          SizedBox(width: 10),
           // Year dropdown
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -428,10 +457,10 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
               child: DropdownButton<String>(
                 value: _selectedYear,
                 isDense: true,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF0A2540),
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
                 items:
                     ['2023-24', '2024-25', '2025-26']
@@ -487,7 +516,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(18),
           border: Border.all(
             color:
@@ -531,7 +560,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                               (v) => setState(() => course.selected = v!),
                         ),
                       ),
-                      const SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -541,12 +570,12 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                               vertical: 4,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0A2540),
+                              color: Theme.of(context).colorScheme.onSurface,
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
                               course.code,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w700,
@@ -554,13 +583,13 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                               ),
                             ),
                           ),
-                          const SizedBox(height: 5),
+                          SizedBox(height: 5),
                           Text(
                             course.title,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15.5,
                               fontWeight: FontWeight.w600,
-                              color: Color(0xFF0A2540),
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
                           ),
                         ],
@@ -569,7 +598,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                       _buildFeedbackBadge(course.feedbackScore),
                     ],
                   ),
-                  const SizedBox(height: 14),
+                  SizedBox(height: 14),
                   // Stats row
                   Row(
                     children: [
@@ -578,9 +607,9 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                         '${course.classStrength}',
                         'Strength',
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       _statChip(Icons.schedule_outlined, course.ltp, 'L/T/P'),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8),
                       _statChip(
                         Icons.check_circle_outline,
                         '${course.sessionsDelivered}',
@@ -588,7 +617,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
                   // Evidence row + action buttons
                   Row(
                     children: [
@@ -617,7 +646,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                                       ? const Color(0xFF2E7D32)
                                       : const Color(0xFFE65100),
                             ),
-                            const SizedBox(width: 5),
+                            SizedBox(width: 5),
                             Text(
                               course.evidenceUploaded
                                   ? 'Evidence uploaded'
@@ -640,13 +669,13 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                         const Color(0xFF1565C0),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconAction(
                         Icons.delete_outline_rounded,
                         const Color(0xFFE53935),
                         () {},
                       ),
-                      const SizedBox(width: 4),
+                      SizedBox(width: 4),
                       _iconAction(
                         Icons.picture_as_pdf_outlined,
                         const Color(0xFF546E7A),
@@ -674,18 +703,18 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         child: Column(
           children: [
             Icon(icon, size: 16, color: const Color(0xFF546E7A)),
-            const SizedBox(height: 3),
+            SizedBox(height: 3),
             Text(
               value,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.w700,
-                color: Color(0xFF0A2540),
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
             Text(
               label,
-              style: const TextStyle(fontSize: 10, color: Color(0xFF90A4AE)),
+              style: TextStyle(fontSize: 10, color: Theme.of(context).colorScheme.onSurfaceVariant),
             ),
           ],
         ),
@@ -711,7 +740,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.star_rounded, size: 14, color: color),
-          const SizedBox(width: 4),
+          SizedBox(width: 4),
           Text(
             score.toString(),
             style: TextStyle(
@@ -754,8 +783,8 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
             minChildSize: 0.35,
             builder:
                 (_, controller) => Container(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(24),
                     ),
@@ -774,7 +803,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                           ),
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Row(
                         children: [
                           Container(
@@ -783,32 +812,32 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF0A2540),
+                              color: Theme.of(context).colorScheme.onSurface,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
                               course.code,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w700,
                                 fontSize: 14,
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: Text(
                               course.title,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF0A2540),
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       _detailRow(
                         'Class Strength',
                         '${course.classStrength} students',
@@ -826,14 +855,14 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                         'Evidence',
                         course.evidenceUploaded ? 'Uploaded' : 'Pending',
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: 24),
                       Row(
                         children: [
                           Expanded(
                             child: OutlinedButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(Icons.edit_outlined, size: 18),
-                              label: const Text('Edit'),
+                              icon: Icon(Icons.edit_outlined, size: 18),
+                              label: Text('Edit'),
                               style: OutlinedButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
@@ -844,17 +873,17 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12),
                           Expanded(
                             child: FilledButton.icon(
                               onPressed: () => Navigator.pop(context),
-                              icon: const Icon(
+                              icon: Icon(
                                 Icons.cloud_upload_outlined,
                                 size: 18,
                               ),
-                              label: const Text('Upload'),
+                              label: Text('Upload'),
                               style: FilledButton.styleFrom(
-                                backgroundColor: const Color(0xFF0A2540),
+                                backgroundColor: Theme.of(context).colorScheme.primary,
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 13,
                                 ),
@@ -880,19 +909,19 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
-              color: Color(0xFF78909C),
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
               fontWeight: FontWeight.w500,
             ),
           ),
           const Spacer(),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 14,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF0A2540),
+              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ],
@@ -934,7 +963,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
       children: [
         Text(
           value,
-          style: const TextStyle(
+          style: TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w800,
@@ -942,7 +971,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
         ),
         Text(
           label,
-          style: const TextStyle(color: Colors.white60, fontSize: 11),
+          style: TextStyle(color: Colors.white60, fontSize: 11),
         ),
       ],
     );
@@ -955,14 +984,14 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4F8),
-      drawer: _buildDrawer(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.teaching),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 0,
         titleSpacing: 0,
-        title: const Text(
+        title: Text(
           'Teaching',
           style: TextStyle(
             color: Colors.white,
@@ -987,16 +1016,16 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
               toggleAppTheme();
             },
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xFF1E3A5F),
             child: Icon(Icons.person, size: 18, color: Colors.white70),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
         ],
       ),
       body: RefreshIndicator(
-        color: const Color(0xFF0A2540),
+        color: Theme.of(context).colorScheme.primary,
         onRefresh: () async => Future.delayed(const Duration(seconds: 1)),
         child: CustomScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
@@ -1006,22 +1035,22 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                 padding: const EdgeInsets.fromLTRB(16, 20, 16, 4),
                 child: Row(
                   children: [
-                    const Text(
+                    Text(
                       'Teaching Assignments',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.w800,
-                        color: Color(0xFF0A2540),
+                        color: Theme.of(context).colorScheme.onSurface,
                         letterSpacing: -0.3,
                       ),
                     ),
                     const Spacer(),
                     FilledButton.icon(
                       onPressed: _showActionsSheet,
-                      icon: const Icon(Icons.add_rounded, size: 18),
-                      label: const Text('Actions'),
+                      icon: Icon(Icons.add_rounded, size: 18),
+                      label: Text('Actions'),
                       style: FilledButton.styleFrom(
-                        backgroundColor: const Color(0xFF0A2540),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 14,
                           vertical: 10,
@@ -1036,7 +1065,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
               ),
             ),
             SliverToBoxAdapter(child: _buildSummaryStats()),
-            const SliverToBoxAdapter(
+            SliverToBoxAdapter(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(16, 16, 16, 2),
                 child: Text(
@@ -1044,7 +1073,7 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0A2540),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
               ),
@@ -1061,24 +1090,24 @@ class _TeachingAssignmentsPageState extends State<TeachingAssignmentsPage>
                 padding: const EdgeInsets.all(16),
                 child: Text(
                   '${_courses.length} of ${_courses.length} courses  •  ${_selectedYear} ${_isOdd ? "ODD" : "EVEN"} semester',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 12.5,
-                    color: Color(0xFF90A4AE),
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
-            const SliverToBoxAdapter(child: SizedBox(height: 80)),
+            SliverToBoxAdapter(child: SizedBox(height: 80)),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _showActionsSheet,
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
-        icon: const Icon(Icons.add_rounded),
-        label: const Text(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
+        icon: Icon(Icons.add_rounded),
+        label: Text(
           'Add Course',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),

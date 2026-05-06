@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'app_navigation.dart';
 import 'app_theme.dart';
+import 'publicationPage.dart';
 
 // ─── Standalone entry (remove if embedding) ───────────────────────────────────
 
@@ -42,6 +44,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   // ─── Shared Drawer ──────────────────────────────────────────────────────────
 
+  // ignore: unused_element
   Widget _buildDrawer() {
     return Drawer(
       backgroundColor: const Color(0xFFFAFAFD),
@@ -49,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         padding: EdgeInsets.zero,
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
@@ -65,14 +68,14 @@ class _ProfileScreenState extends State<ProfileScreen>
                     shape: BoxShape.circle,
                     border: Border.all(color: Colors.white30, width: 2),
                   ),
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 32,
                     backgroundColor: Color(0xFF1E3A5F),
                     child: Icon(Icons.person, size: 36, color: Colors.white70),
                   ),
                 ),
-                const SizedBox(height: 14),
-                const Text(
+                SizedBox(height: 14),
+                Text(
                   'Faculty Member',
                   style: TextStyle(
                     color: Colors.white,
@@ -80,15 +83,15 @@ class _ProfileScreenState extends State<ProfileScreen>
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 3),
-                const Text(
+                SizedBox(height: 3),
+                Text(
                   '23bee006@smvdu.ac.in',
                   style: TextStyle(color: Colors.white60, fontSize: 12.5),
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8),
           _dItem(Icons.dashboard_outlined, 'Dashboard', false),
           _dItem(Icons.person_outline, 'My Profile', true),
           _dSection('Teaching & Mentoring'),
@@ -101,8 +104,30 @@ class _ProfileScreenState extends State<ProfileScreen>
           _dSub(Icons.group_outlined, 'Mentoring', false),
           _dSub(Icons.lightbulb_outline, 'Guidance', false),
           _dSection('Research'),
-          _dItem(Icons.article_outlined, 'My Publications & IP', false),
-          _dSub(Icons.library_books_outlined, 'Publications', false),
+          _dItem(
+            Icons.article_outlined,
+            'My Publications & IP',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
+          _dSub(
+            Icons.library_books_outlined,
+            'Publications',
+            false,
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const PublicationsPage()),
+              );
+            },
+          ),
           _dSub(Icons.verified_outlined, 'IP & Patents', false),
           _dItem(
             Icons.business_center_outlined,
@@ -125,10 +150,10 @@ class _ProfileScreenState extends State<ProfileScreen>
           _dItem(Icons.assignment_outlined, 'APR', false),
           _dSub(Icons.edit_note_outlined, 'Prepare APR', false),
           _dSub(Icons.send_outlined, 'Preview & Submit', false),
-          const SizedBox(height: 8),
-          const Divider(indent: 16, endIndent: 16),
+          SizedBox(height: 8),
+          Divider(indent: 16, endIndent: 16),
           _dItem(Icons.logout_rounded, 'Logout', false, isLogout: true),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
         ],
       ),
     );
@@ -138,10 +163,10 @@ class _ProfileScreenState extends State<ProfileScreen>
     padding: const EdgeInsets.fromLTRB(20, 14, 20, 4),
     child: Text(
       label.toUpperCase(),
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 10.5,
         fontWeight: FontWeight.w700,
-        color: Color(0xFF90A4AE),
+        color: Theme.of(context).colorScheme.onSurfaceVariant,
         letterSpacing: 1.2,
       ),
     ),
@@ -152,6 +177,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     String label,
     bool selected, {
     bool isLogout = false,
+    VoidCallback? onTap,
   }) {
     final color =
         isLogout
@@ -179,11 +205,16 @@ class _ProfileScreenState extends State<ProfileScreen>
       selected: selected,
       selectedTileColor: const Color(0xFFE3F2FD),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      onTap: () => Navigator.pop(context),
+      onTap: onTap ?? () => Navigator.pop(context),
     );
   }
 
-  Widget _dSub(IconData icon, String label, bool selected) => Padding(
+  Widget _dSub(
+    IconData icon,
+    String label,
+    bool selected, {
+    VoidCallback? onTap,
+  }) => Padding(
     padding: const EdgeInsets.only(left: 16),
     child: ListTile(
       dense: true,
@@ -204,7 +235,7 @@ class _ProfileScreenState extends State<ProfileScreen>
       selected: selected,
       selectedTileColor: const Color(0xFFE3F2FD),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      onTap: () => Navigator.pop(context),
+      onTap: onTap ?? () => Navigator.pop(context),
     ),
   );
 
@@ -231,13 +262,13 @@ class _ProfileScreenState extends State<ProfileScreen>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF0A2540).withOpacity(0.25),
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.25),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
                   ],
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
                     'FM',
                     style: TextStyle(
@@ -248,22 +279,22 @@ class _ProfileScreenState extends State<ProfileScreen>
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Faculty Member',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF0A2540),
+                      color: Theme.of(context).colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: 2),
                   Text(
                     'Assistant Professor • CSE',
-                    style: TextStyle(fontSize: 12.5, color: Color(0xFF78909C)),
+                    style: TextStyle(fontSize: 12.5, color: Theme.of(context).colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -277,7 +308,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   color: const Color(0xFFE8F5E9),
                   borderRadius: BorderRadius.circular(20),
                 ),
-                child: const Text(
+                child: Text(
                   'Active',
                   style: TextStyle(
                     fontSize: 11,
@@ -288,20 +319,20 @@ class _ProfileScreenState extends State<ProfileScreen>
               ),
             ],
           ),
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           // Scrollable tab bar
           TabBar(
             controller: _tabController,
             isScrollable: true,
             labelColor: Colors.white,
-            unselectedLabelColor: const Color(0xFF78909C),
-            labelStyle: const TextStyle(
+            unselectedLabelColor: Theme.of(context).colorScheme.onSurfaceVariant,
+            labelStyle: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
             ),
-            unselectedLabelStyle: const TextStyle(fontSize: 12),
+            unselectedLabelStyle: TextStyle(fontSize: 12),
             indicator: BoxDecoration(
-              color: const Color(0xFF0A2540),
+              color: Theme.of(context).colorScheme.onSurface,
               borderRadius: BorderRadius.circular(20),
             ),
             indicatorSize: TabBarIndicatorSize.tab,
@@ -321,7 +352,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(t.icon, size: 14),
-                              const SizedBox(width: 5),
+                              SizedBox(width: 5),
                               Text(t.label),
                             ],
                           ),
@@ -340,14 +371,24 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF0F4FB),
-      drawer: _buildDrawer(),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF0A2540),
-        foregroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+              return;
+            }
+
+            Navigator.pushReplacementNamed(context, AppRoute.dashboard);
+          },
+        ),
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 0,
         titleSpacing: 0,
-        title: const Text(
+        title: Text(
           'My Profile',
           style: TextStyle(
             color: Colors.white,
@@ -371,12 +412,12 @@ class _ProfileScreenState extends State<ProfileScreen>
               toggleAppTheme();
             },
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 16,
             backgroundColor: Color(0xFF1E3A5F),
             child: Icon(Icons.person, size: 18, color: Colors.white70),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12),
         ],
       ),
       body: Column(
@@ -490,7 +531,7 @@ class _PersonalTabState extends State<_PersonalTab> {
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -514,13 +555,13 @@ class _PersonalTabState extends State<_PersonalTab> {
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: const Color(0xFF0A2540).withOpacity(0.3),
+                              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.3),
                               blurRadius: 12,
                               offset: const Offset(0, 4),
                             ),
                           ],
                         ),
-                        child: const Center(
+                        child: Center(
                           child: Text(
                             'FM',
                             style: TextStyle(
@@ -542,7 +583,7 @@ class _PersonalTabState extends State<_PersonalTab> {
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.edit_rounded,
                             size: 12,
                             color: Colors.white,
@@ -551,20 +592,20 @@ class _PersonalTabState extends State<_PersonalTab> {
                       ),
                     ],
                   ),
-                  const SizedBox(width: 16),
+                  SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Profile Photo',
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: Color(0xFF0A2540),
+                            color: Theme.of(context).colorScheme.onSurface,
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(height: 4),
                         Text(
                           'JPG or PNG, max 2MB',
                           style: TextStyle(
@@ -572,11 +613,11 @@ class _PersonalTabState extends State<_PersonalTab> {
                             color: Colors.grey.shade500,
                           ),
                         ),
-                        const SizedBox(height: 10),
+                        SizedBox(height: 10),
                         Row(
                           children: [
                             _outlineBtn(Icons.upload_rounded, 'Upload', () {}),
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8),
                             _outlineBtn(
                               Icons.description_outlined,
                               'Upload CV',
@@ -591,11 +632,11 @@ class _PersonalTabState extends State<_PersonalTab> {
               ),
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // ── Form fields ─────────────────────────────────────────────
             _sectionLabel('Basic Information'),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             _fieldCard(
               children: [
                 _field(
@@ -614,9 +655,9 @@ class _PersonalTabState extends State<_PersonalTab> {
               ],
             ),
 
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             _sectionLabel('Contact Details'),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             _fieldCard(
               children: [
                 _field(
@@ -637,9 +678,9 @@ class _PersonalTabState extends State<_PersonalTab> {
               ],
             ),
 
-            const SizedBox(height: 14),
+            SizedBox(height: 14),
             _sectionLabel('Academic Details'),
-            const SizedBox(height: 10),
+            SizedBox(height: 10),
             _fieldCard(
               children: [
                 _field(_deptCtrl, 'Department', Icons.account_tree_outlined),
@@ -653,7 +694,7 @@ class _PersonalTabState extends State<_PersonalTab> {
               ],
             ),
 
-            const SizedBox(height: 28),
+            SizedBox(height: 28),
 
             // ── Save button ────────────────────────────────────────────
             _SaveButton(
@@ -668,7 +709,7 @@ class _PersonalTabState extends State<_PersonalTab> {
               },
             ),
 
-            const SizedBox(height: 32),
+            SizedBox(height: 32),
           ],
         ),
       ),
@@ -677,7 +718,7 @@ class _PersonalTabState extends State<_PersonalTab> {
 
   Widget _sectionLabel(String label) => Text(
     label,
-    style: const TextStyle(
+    style: TextStyle(
       fontSize: 13,
       fontWeight: FontWeight.w700,
       color: Color(0xFF546E7A),
@@ -688,7 +729,7 @@ class _PersonalTabState extends State<_PersonalTab> {
   Widget _fieldCard({required List<Widget> children}) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(18),
         boxShadow: [
           BoxShadow(
@@ -702,7 +743,7 @@ class _PersonalTabState extends State<_PersonalTab> {
     );
   }
 
-  Widget _divider() => const Divider(
+  Widget _divider() => Divider(
     height: 1,
     indent: 16,
     endIndent: 16,
@@ -723,10 +764,10 @@ class _PersonalTabState extends State<_PersonalTab> {
         controller: ctrl,
         readOnly: readOnly,
         keyboardType: keyboardType,
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 15,
           fontWeight: FontWeight.w500,
-          color: Color(0xFF0A2540),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         decoration: InputDecoration(
           labelText: required ? '$label *' : label,
@@ -770,10 +811,10 @@ class _PersonalTabState extends State<_PersonalTab> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, size: 14, color: const Color(0xFF1565C0)),
-            const SizedBox(width: 5),
+            SizedBox(width: 5),
             Text(
               label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,
                 color: Color(0xFF1565C0),
@@ -831,10 +872,10 @@ class _SaveButton extends StatelessWidget {
                   color: Colors.white,
                   size: 20,
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10),
                 Text(
                   saved ? 'Changes Saved!' : 'Save Changes',
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
@@ -868,12 +909,12 @@ class _PlaceholderTab extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         children: [
-          const SizedBox(height: 32),
+          SizedBox(height: 32),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.all(32),
             decoration: BoxDecoration(
-              color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
@@ -894,16 +935,16 @@ class _PlaceholderTab extends StatelessWidget {
                   ),
                   child: Icon(icon, size: 34, color: const Color(0xFF1565C0)),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 20),
                 Text(
                   label,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF0A2540),
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
                 Text(
                   description,
                   textAlign: TextAlign.center,
@@ -913,14 +954,14 @@ class _PlaceholderTab extends StatelessWidget {
                     height: 1.5,
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: 24),
                 OutlinedButton.icon(
                   onPressed: () {},
-                  icon: const Icon(Icons.add_rounded),
+                  icon: Icon(Icons.add_rounded),
                   label: Text('Add $label'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: const Color(0xFF1565C0),
-                    side: const BorderSide(color: Color(0xFF1565C0)),
+                    side: BorderSide(color: Color(0xFF1565C0)),
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
                       vertical: 12,

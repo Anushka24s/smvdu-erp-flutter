@@ -1,8 +1,22 @@
 import 'package:flutter/material.dart';
 
 //import 'package:smvdu_erp/Login.dart';
+import 'package:smvdu_erp/DB2main.dart';
+import 'package:smvdu_erp/Guidance.dart';
+import 'package:smvdu_erp/Login.dart';
 import 'package:smvdu_erp/SplashScreen.dart';
 import 'package:smvdu_erp/app_theme.dart';
+import 'package:smvdu_erp/app_navigation.dart';
+import 'package:smvdu_erp/conference.dart';
+import 'package:smvdu_erp/events_org.dart' as events_org;
+import 'package:smvdu_erp/mainprofilepage.dart';
+import 'package:smvdu_erp/mentoringPage.dart';
+import 'package:smvdu_erp/patents.dart';
+import 'package:smvdu_erp/prepareApr.dart';
+import 'package:smvdu_erp/previewApr.dart' as preview_apr;
+import 'package:smvdu_erp/projects.dart';
+import 'package:smvdu_erp/publicationPage.dart';
+import 'package:smvdu_erp/service.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +39,23 @@ class MyApp extends StatelessWidget {
           darkTheme: buildDarkTheme(),
           themeMode: themeMode,
           home: const SplashScreen(),
+          routes: {
+            AppRoute.dashboard: (_) => const DashboardPage(),
+            AppRoute.profile: (_) => const ProfileScreen(),
+            AppRoute.teaching: (_) => const TeachingAssignmentsPage(),
+            AppRoute.mentoring: (_) => const MentoringPage(),
+            AppRoute.guidance: (_) => const GuidancePage(),
+            AppRoute.publications: (_) => const PublicationsPage(),
+            AppRoute.patents: (_) => const IpPatentsPage(),
+            AppRoute.projects: (_) => const ProjectsConsultancyPage(),
+            AppRoute.conferences: (_) => const ConferencesAttendedPage(),
+            AppRoute.eventsOrganized:
+                (_) => const events_org.ConferencesAttendedPage(),
+            AppRoute.service: (_) => const PrepareAprPage(),
+            AppRoute.prepareApr: (_) => const PrepareAprPage(),
+            AppRoute.previewApr: (_) => const preview_apr.PreviewAprPage(),
+            AppRoute.login: (_) => const LoginScreen(),
+          },
         );
       },
     );

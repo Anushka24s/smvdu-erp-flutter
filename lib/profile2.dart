@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'DB2main.dart';
+import 'app_navigation.dart';
 import 'app_theme.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -35,11 +35,9 @@ class _ProfileScreenState extends State<ProfileScreen>
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = widget.isDarkMode;
-
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Profile', textAlign: TextAlign.start),
+        title: Text('My Profile', textAlign: TextAlign.start),
         bottom: TabBar(
           controller: _tabController,
           isScrollable: true,
@@ -70,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>
               toggleAppTheme();
             },
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(right: 16),
             child: CircleAvatar(
               backgroundColor: Colors.white,
@@ -79,103 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Color(0xFF0D47A1)),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
-                  CircleAvatar(
-                    radius: 36,
-                    backgroundColor: Colors.white,
-                    child: Icon(
-                      Icons.school,
-                      size: 48,
-                      color: Color(0xFF0D47A1),
-                    ),
-                  ),
-                  SizedBox(height: 13),
-                  Text(
-                    'Faculty Member',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  Text(
-                    '23bee006@smvdu.ac.in',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                  ),
-                ],
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text('Dashboard'),
-              selected: false,
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('My Profile'),
-              selected: true,
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.school),
-              title: const Text('My Teaching, Mentoring & Guidance'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text('Teaching'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.group),
-              title: const Text('Mentoring'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.lightbulb),
-              title: const Text('Guidance'),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: const Icon(Icons.article),
-              title: const Text('My Publications & IP'),
-              onTap: () {},
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.donut_small),
-              title: const Text('Projects & Consultancy'),
-              onTap: () {},
-            ),
-            // Add more menu items as needed...
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.event),
-              title: const Text('Events Organized'),
-              onTap: () {},
-            ),
-
-            ListTile(
-              leading: const Icon(Icons.design_services_rounded),
-              title: const Text('Service & Outreach'),
-              onTap: () {},
-            ),
-
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('logout'),
-              onTap: () {},
-            ),
-          ],
-        ),
-      ),
+      drawer: const FacultyNavigationDrawer(currentRoute: AppRoute.profile),
       body: TabBarView(
         controller: _tabController,
         children: [
@@ -202,39 +104,39 @@ class _ProfileScreenState extends State<ProfileScreen>
             decoration: InputDecoration(labelText: 'Full Name *'),
             controller: TextEditingController(text: 'Faculty Member'),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           TextField(
             decoration: InputDecoration(labelText: 'Designation *'),
             controller: TextEditingController(text: 'Assistant Professor'),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           TextField(
             decoration: InputDecoration(labelText: 'Phone'),
             controller: TextEditingController(text: '+91-9999999999'),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16),
           TextField(
             decoration: InputDecoration(labelText: 'Email *'),
             controller: TextEditingController(text: 'faculty@smvdu.ac.in'),
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           Row(
             children: [
               ElevatedButton(
                 onPressed: () {},
-                child: const Text('Upload Avatar'),
+                child: Text('Upload Avatar'),
               ),
-              const SizedBox(width: 16),
-              ElevatedButton(onPressed: () {}, child: const Text('Upload CV')),
+              SizedBox(width: 16),
+              ElevatedButton(onPressed: () {}, child: Text('Upload CV')),
             ],
           ),
-          const SizedBox(height: 24),
+          SizedBox(height: 24),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 48),
             ),
-            child: const Text('Save changes'),
+            child: Text('Save changes'),
           ),
         ],
       ),
@@ -242,6 +144,6 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   Widget _buildPlaceholderTab(String title) {
-    return Center(child: Text(title, style: const TextStyle(fontSize: 18)));
+    return Center(child: Text(title, style: TextStyle(fontSize: 18)));
   }
 }
